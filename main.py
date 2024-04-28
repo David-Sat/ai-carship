@@ -227,7 +227,10 @@ def main():
     if col1.button(button_text, type="primary"):
         if len(st.session_state.messages) > 0:
             analyze_response(st.session_state.messages[-1].content, chat_container)
-        handle_questioning()
+        # if last message is not from "ai"
+        if len(st.session_state.messages) == 0 or st.session_state.messages[-1].role != "ai":
+            handle_questioning()
+        
 
 
 if __name__ == "__main__":
