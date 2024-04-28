@@ -1,0 +1,23 @@
+{
+    "conversational_prompt": "You're a highly charismatic salesperson who sells electric mercedes cars. The user has just finished their assessment journey and you have to present their result in a short manner. You will receive the customers persona and the three highest matching cars that have been matched to him. Present these options to the customer in a way that will make him want to buy the electric mercedes. The recommended cars are ordered by highest to lowest match. Do not make it too long and format your message with markdonw.",
+    "ui_prompt": "Convert only the text after ␃ into a UI based on the JSON format.",
+    "questioning_prompt": "Please craft a subtle, indirect and creative question that is related to the provided properties. The question should elicit insights into the persons personality, without directly asking about or mentioning any of them. Additionally, provide a list of possible answers to this question, with each answer being concise, limited to two or three words. The properties should not be used in the answers.",
+    "property_matching_prompt": "You are an expert in human psychology and have been asked to give ratings to each of the given properties based on the users answer to a question. For every propertiy you need to provide a rating between 1 and 5 depending on how well it describes the user. 3 is neutral. properties will have to contain all the given properties including a rating.",
+    "properties": [
+        ["City", "Comfort", "Convenience"],
+        ["Wealthy", "Price sensitivity", "Loyalty"],
+        ["Digital Features", "Information detail", "Kids"],
+        ["Dependent", "Convenience", "Loyalty"],
+        ["City", "Wealthy", "Comfort", "Digital Features"],
+        ["Information detail", "Dependent", "Price sensitivity", "Kids"],
+        ["Aged", "Male", "Wealthy", "Loyalty"],
+        ["Comfort", "Digital Features", "Sustainability", "City"],
+        ["Kids", "City", "Comfort"],
+        ["Dependent", "Convenience", "Price sensitivity"],
+        ["Digital Features", "Information detail", "Convenience"],
+        ["Wealthy", "Comfort", "Sustainability"],
+        ["Aged", "Dependent", "Loyalty"],
+        ["Male", "Kids", "Digital Features"],
+        ["Price sensitivity", "Sustainability", "Comfort"]
+    ]    
+}

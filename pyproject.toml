@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "ui-converse"
+version = "0.1.0"
+description = ""
+authors = ["David Satomi <david.satomi@convalid-ai.de>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+langchain = "^0.1.16"
+langchain-community = "^0.0.34"
+pandas = "^2.2.2"
+streamlit = "^1.33.0"
+langchain-openai = "^0.1.4"
+langchain-google-genai = "^1.0.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
