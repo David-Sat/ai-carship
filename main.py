@@ -19,13 +19,16 @@ def get_conversation() -> Optional[Conversation]:
     """Retrieve the current conversation instance from Streamlit's session state."""
     return st.session_state.get("conversation", None)
 
+
 def get_questioning() -> Optional[Questioning]:
     """Retrieve the current questioning instance from Streamlit's session state."""
     return st.session_state.get("questioning", None)
 
+
 def get_analysing() -> Optional[Analysing]:
     """Retrieve the current analysing instance from Streamlit's session state."""
     return st.session_state.get("analysing", None)
+
 
 def handle_submission():
     """Process and submit user input, updating conversation history."""
@@ -55,6 +58,7 @@ def handle_submission():
     st.session_state.user_inputs = {}
     st.rerun()
 
+
 def handle_questioning():
     properties = separate_and_select()
     st.session_state.last_properties = properties
@@ -73,6 +77,7 @@ def handle_questioning():
     st.session_state.user_inputs = {}
     st.rerun()
 
+
 def separate_and_select():
     output = []
     zero_properties = []
@@ -85,7 +90,8 @@ def separate_and_select():
             non_zero_properties.append(property)
 
     num_new_properties = random.choice([2, 3])
-    selected_zero_properties = random.sample(zero_properties, min(num_new_properties, len(zero_properties)))
+    selected_zero_properties = random.sample(
+        zero_properties, min(num_new_properties, len(zero_properties)))
 
     selected_non_zero_property = None
     if len(selected_zero_properties) == 2 and non_zero_properties:
@@ -96,27 +102,34 @@ def separate_and_select():
         output.append(selected_non_zero_property)
     return output
 
+
 def analyze_response(response, chat_container):
     """Analyze the response and display the UI elements."""
     data = json.loads(response)
     analysing_instance = get_analysing()
 
-    analysis = analysing_instance(data["question"], st.session_state.user_inputs[data["question"]], st.session_state.last_properties)
+    analysis = analysing_instance(
+        data["question"], st.session_state.user_inputs[data["question"]], st.session_state.last_properties)
 
-    st.session_state.conv_history.append(HumanMessage(role="user", content=analysis))
-    st.session_state.messages.append(HumanMessage(role="user", content=analysis))
-    
+    st.session_state.conv_history.append(
+        HumanMessage(role="user", content=analysis))
+    st.session_state.messages.append(
+        HumanMessage(role="user", content=analysis))
+
     update_person(analysis)
     if all(value != 0 for value in st.session_state.person.values()):
         calculate_match(chat_container)
+
 
 def update_person(analysis):
     data = json.loads(analysis)
     for property in data["properties"]:
         if st.session_state.person[property["property_name"]] != 0:
-            st.session_state.person[property["property_name"]] = (st.session_state.person[property["property_name"]] + property["property_value"]) / 2
+            st.session_state.person[property["property_name"]] = (
+                st.session_state.person[property["property_name"]] + property["property_value"]) / 2
         else:
-            st.session_state.person[property["property_name"]] = property["property_value"]
+            st.session_state.person[property["property_name"]
+                                    ] = property["property_value"]
 
 
 def calculate_match(chat_container):
@@ -136,7 +149,8 @@ def calculate_match(chat_container):
 
         persona_string = get_non_zero_properties(st.session_state.person)
 
-        textual_response = conversation_instance(persona_string, car_string, stream_handler)
+        textual_response = conversation_instance(
+            persona_string, car_string, stream_handler)
 
         st.session_state.conv_history.append(AIMessage(
             role="ai", content=textual_response))
@@ -173,6 +187,7 @@ def model_selection(agent):
 
     return selection
 
+
 def clear_cache():
     keys = list(st.session_state.keys())
     for key in keys:
@@ -181,15 +196,17 @@ def clear_cache():
 
 def main():
     """Main function to initialize and run the Streamlit application."""
-    st.set_page_config(page_title="Carship", page_icon="❤️", initial_sidebar_state="collapsed", menu_items=None)
+    st.set_page_config(page_title="Carship", page_icon="❤️",
+                       initial_sidebar_state="collapsed", menu_items=None)
     initialize_session()
-    #handle_sidebar()
+    # handle_sidebar()
 
-    with st.expander("Debug Info"):
-        st.write(st.session_state)
+    # with st.expander("Debug Info"):
+    # st.write(st.session_state)
 
     st.title("Carship")
-    st.subheader("Every 3 minutes an electric mercedes finds a new owner on carship.")
+    st.subheader(
+        "Every 3 minutes an electric mercedes finds a new owner on carship.")
 
     if st.session_state.messages:
         st.divider()
@@ -205,10 +222,9 @@ def main():
             with chat_container.chat_message("ai"):
                 st.markdown(msg.content)
         else:
-            #display_user_answer(msg.content)
-            #chat_container.chat_message(msg.role).write(msg.content)
+            # display_user_answer(msg.content)
+            # chat_container.chat_message(msg.role).write(msg.content)
             pass
-
 
     if st.session_state.messages:
         display_progress()
@@ -219,18 +235,17 @@ def main():
         clear_cache()
         st.rerun()
 
-
     button_text = "Submit"
     if len(st.session_state.messages) == 0:
         button_text = "Start the Journey"
 
     if col1.button(button_text, type="primary"):
         if len(st.session_state.messages) > 0:
-            analyze_response(st.session_state.messages[-1].content, chat_container)
+            analyze_response(
+                st.session_state.messages[-1].content, chat_container)
         # if last message is not from "ai"
         if len(st.session_state.messages) == 0 or st.session_state.messages[-1].role != "ai":
             handle_questioning()
-        
 
 
 if __name__ == "__main__":
